@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>J.A.R.V.I.S. // System Automation Protocol</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-mode">
+  <div class="hud-scanlines"></div>
+  <div class="hud-vignette"></div>
+  <div class="cyber-grid"></div>
+
+  <!-- MAIN HUD WRAPPER -->
+  <div class="hud-container">
+    
+    <!-- TOP STATUS BAR -->
+    <header class="hud-header">
+      <div class="header-left">
+        <div class="logo-group">
+          <div class="reactor-mini-dot"></div>
+          <span class="logo-title">J.A.R.V.I.S.</span>
+          <span class="logo-version">MARK VII // OS-X</span>
+        </div>
+        <div class="status-badge" id="hudStatusBadge">
+          <span class="status-indicator"></span>
+          <span class="status-label" id="systemStatusText">ONLINE // ALL PROTOCOLS ARMED</span>
+        </div>
+      </div>
+
+      <div class="header-center">
+        <div class="telemetry-bar">
+          <div class="telemetry-item">
+            <span class="lbl">HOST:</span>
+            <span class="val" id="telemetryHost">MAC-CORE</span>
+          </div>
+          <div class="telemetry-divider">/</div>
+          <div class="telemetry-item">
+            <span class="lbl">USER:</span>
+            <span class="val" id="telemetryUser">OPERATOR</span>
+          </div>
+          <div class="telemetry-divider">/</div>
+          <div class="telemetry-item">
+            <span class="lbl">UPTIME:</span>
+            <span class="val" id="telemetryUptime">00:00:00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="time-display">
+          <span class="hud-clock" id="hudClock">12:00:00</span>
+          <span class="hud-date" id="hudDate">OCT 24, 2026</span>
+        </div>
+        <div class="header-controls">
+          <button class="icon-btn active" id="btnVoiceToggle" title="Continuous Listening (Wake: 'Jarvis')">
+            <span class="btn-glow"></span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <line x1="12" y1="19" x2="12" y2="23"/>
+              <line x1="8" y1="23" x2="16" y2="23"/>
+            </svg>
+            <span class="btn-text">AUTO-MIC</span>
+          </button>
+          <button class="icon-btn" id="btnMuteSpeech" title="Toggle JARVIS Voice Responses">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+          </button>
+          <button class="icon-btn" id="btnTerminalToggle" title="Toggle Diagnostic Terminal">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="4 17 10 11 4 5"/>
+              <line x1="12" y1="19" x2="20" y2="19"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN BODY: 3 COLUMNS -->
+    <main class="hud-main">
+
+      <!-- LEFT COLUMN: SYSTEM VITALS -->
+      <aside class="hud-sidebar hud-sidebar-left">
+        <div class="panel-box">
+          <div class="panel-header">
+            <span class="panel-tag">// DIAGNOSTICS</span>
+            <h3 class="panel-title">SYSTEM VITALS</h3>
+            <div class="corner-accents"></div>
+          </div>
+          
+          <div class="vitals-grid">
+            <!-- CPU GAUGE -->
+            <div class="vital-card">
+              <div class="vital-top">
+                <span class="vital-name">CPU LOAD</span>
+                <span class="vital-val" id="cpuUsageVal">0%</span>
+              </div>
+              <div class="meter-bar-container">
+                <div class="meter-bar-fill" id="cpuUsageFill" style="width: 15%;"></div>
+              </div>
+              <span class="vital-sub" id="cpuModelLabel">Apple M-Series</span>
+            </div>
+
+            <!-- MEMORY GAUGE -->
+            <div class="vital-card">
+              <div class="vital-top">
+                <span class="vital-name">RAM CAPACITY</span>
+                <span class="vital-val" id="ramUsageVal">0%</span>
+              </div>
+              <div class="meter-bar-container">
+                <div class="meter-bar-fill" id="ramUsageFill" style="width: 40%;"></div>
+              </div>
+              <span class="vital-sub" id="ramInfoLabel">-- GB / -- GB</span>
+            </div>
+
+            <!-- BATTERY GAUGE -->
+            <div class="vital-card">
+              <div class="vital-top">
+                <span class="vital-name">POWER CORE</span>
+                <span class="vital-val" id="batteryVal">100%</span>
+              </div>
+              <div class="meter-bar-container">
+                <div class="meter-bar-fill battery-fill" id="batteryFill" style="width: 80%;"></div>
+              </div>
+              <span class="vital-sub" id="batteryStatusLabel">AC Connected</span>
+            </div>
+
+            <!-- AUDIO / VOLUME -->
+            <div class="vital-card">
+              <div class="vital-top">
+                <span class="vital-name">AUDIO OUTPUT</span>
+                <span class="vital-val" id="volumeVal">50%</span>
+              </div>
+              <div class="volume-interactive">
+                <input type="range" id="volumeSlider" min="0" max="100" value="50" class="cyber-slider">
+                <button class="vol-mute-btn" id="btnQuickMute">MUTE</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RECENT ACTIONS LOG -->
+        <div class="panel-box flex-grow">
+          <div class="panel-header">
+            <span class="panel-tag">// TELEMETRY</span>
+            <h3 class="panel-title">SUBSYSTEM ACTIVITY</h3>
+            <div class="corner-accents"></div>
+          </div>
+          <div class="activity-feed" id="activityFeed">
+            <div class="feed-item">
+              <span class="feed-time">INIT</span>
+              <span class="feed-msg">JARVIS Core Engine initialized.</span>
+            </div>
+            <div class="feed-item">
+              <span class="feed-time">SYS</span>
+              <span class="feed-msg">macOS Automation bridge established.</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CENTER COLUMN: HOLOGRAPHIC ARC REACTOR & VOICE CORE -->
+      <section class="hud-center">
+        
+        <!-- HOLOGRAPHIC AI BRAIN ORB STAGE -->
+        <div class="brain-stage" id="brainContainer" title="Click to toggle listening">
+          <div class="brain-halo"></div>
+          <div class="brain-inner-glow"></div>
+          
+          <!-- AI WAVEFORM & BRAIN CANVAS -->
+          <canvas id="brainCanvas" width="480" height="480"></canvas>
+          
+          <!-- INTERACTIVE CLICK OVERLAY -->
+          <div class="brain-click-catcher"></div>
+          <div class="brain-tap-tip" id="brainTapTip"><span class="tip-dot"></span> TAP ORB TO SPEAK WITH JARVIS</div>
+        </div>
+
+        <!-- TRANSCRIBED QUERY & STATUS DISPLAY (MATCHING REFERENCE) -->
+        <div class="brain-feedback-container">
+          <div class="brain-transcript" id="voiceTranscript">
+            "What can I do for you today, sir?"
+          </div>
+          <div class="brain-state-text" id="brainStateText">
+            Listening...
+          </div>
+          <div class="ai-speech-bubble" id="aiSpeechBubble">
+            "At your service, sir. Speak or type any command."
+          </div>
+        </div>
+
+      </section>
+
+      <!-- RIGHT COLUMN: COMMAND MATRIX & MAC CONTROLS -->
+      <aside class="hud-sidebar hud-sidebar-right">
+        
+        <!-- QUICK APP LAUNCHER -->
+        <div class="panel-box">
+          <div class="panel-header">
+            <span class="panel-tag">// EXECUTION MATRIX</span>
+            <h3 class="panel-title">APP LAUNCHPAD</h3>
+            <div class="corner-accents"></div>
+          </div>
+          <div class="matrix-grid">
+            <button class="matrix-btn" data-action="app" data-target="Chrome">
+              <span class="matrix-icon">🌐</span>
+              <span class="matrix-label">CHROME</span>
+            </button>
+            <button class="matrix-btn" data-action="app" data-target="Visual Studio Code">
+              <span class="matrix-icon">💻</span>
+              <span class="matrix-label">VS CODE</span>
+            </button>
+            <button class="matrix-btn" data-action="app" data-target="Terminal">
+              <span class="matrix-icon">⚡</span>
+              <span class="matrix-label">TERMINAL</span>
+            </button>
+            <button class="matrix-btn" data-action="app" data-target="Spotify">
+              <span class="matrix-icon">🎵</span>
+              <span class="matrix-label">SPOTIFY</span>
+            </button>
+            <button class="matrix-btn" data-action="folder" data-target="Downloads">
+              <span class="matrix-icon">📁</span>
+              <span class="matrix-label">DOWNLOADS</span>
+            </button>
+            <button class="matrix-btn" data-action="folder" data-target="Desktop">
+              <span class="matrix-icon">🖥️</span>
+              <span class="matrix-label">DESKTOP</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- SYSTEM COMMAND MATRIX -->
+        <div class="panel-box">
+          <div class="panel-header">
+            <span class="panel-tag">// AUTOMATION PROTOCOLS</span>
+            <h3 class="panel-title">SYSTEM CONTROLS</h3>
+            <div class="corner-accents"></div>
+          </div>
+          <div class="action-list">
+            <button class="action-row-btn" id="btnTakeScreenshot">
+              <div class="action-btn-left">
+                <span class="action-sym">📸</span>
+                <div class="action-info">
+                  <span class="action-title">CAPTURE SCREENSHOT</span>
+                  <span class="action-desc">Saves and previews current screen</span>
+                </div>
+              </div>
+              <span class="action-tag">RUN</span>
+            </button>
+
+            <!-- MEDIA CONTROL ROW -->
+            <div class="media-control-box">
+              <div class="media-title">MEDIA PLAYBACK</div>
+              <div class="media-buttons">
+                <button class="media-btn" data-media="previous" title="Previous Track">⏮</button>
+                <button class="media-btn play-pause" data-media="playpause" title="Play / Pause">⏯ PLAY/PAUSE</button>
+                <button class="media-btn" data-media="next" title="Next Track">⏭</button>
+              </div>
+            </div>
+
+            <button class="action-row-btn" id="btnLockScreen">
+              <div class="action-btn-left">
+                <span class="action-sym">🔒</span>
+                <div class="action-info">
+                  <span class="action-title">LOCK WORKSTATION</span>
+                  <span class="action-desc">Immediate display sleep & secure</span>
+                </div>
+              </div>
+              <span class="action-tag danger">SECURE</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- QUICK WEB SEARCH -->
+        <div class="panel-box">
+          <div class="panel-header">
+            <span class="panel-tag">// NETWORK QUERY</span>
+            <h3 class="panel-title">GLOBAL SEARCH</h3>
+            <div class="corner-accents"></div>
+          </div>
+          <div class="quick-search-form">
+            <input type="text" id="quickSearchInput" placeholder="Search Google, YouTube, GitHub..." class="cyber-input">
+            <div class="search-engines">
+              <button class="engine-tag active" data-engine="google">GOOGLE</button>
+              <button class="engine-tag" data-engine="youtube">YOUTUBE</button>
+              <button class="engine-tag" data-engine="github">GITHUB</button>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+    </main>
+
+    <!-- BOTTOM COMMAND CONSOLE -->
+    <footer class="hud-footer">
+      <div class="command-input-wrapper">
+        <div class="prompt-symbol">
+          <span class="prompt-blip"></span>
+          JARVIS &gt;
+        </div>
+        <input 
+          type="text" 
+          id="commandInput" 
+          class="cyber-command-input" 
+          placeholder="Speak or enter command (e.g. 'Open VS Code', 'Volume to 75', 'Take screenshot', 'Play music')..."
+          autocomplete="off"
+        >
+        <button class="cmd-send-btn" id="btnSendCommand">
+          <span class="btn-text">EXECUTE</span>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- SUGGESTION CHIPS -->
+      <div class="quick-chips">
+        <span class="chips-label">SUGGESTIONS:</span>
+        <button class="chip-btn" data-cmd="Jarvis, open Chrome">"Open Chrome"</button>
+        <button class="chip-btn" data-cmd="Jarvis, what is my battery status?">"Battery status"</button>
+        <button class="chip-btn" data-cmd="Jarvis, take a screenshot">"Take screenshot"</button>
+        <button class="chip-btn" data-cmd="Jarvis, set volume to 60">"Volume 60%"</button>
+        <button class="chip-btn" data-cmd="Jarvis, play music">"Play music"</button>
+        <button class="chip-btn" data-cmd="Jarvis, open Downloads folder">"Downloads"</button>
+        <button class="chip-btn" data-cmd="Jarvis, lock the screen">"Lock screen"</button>
+        <button class="chip-btn" data-cmd="Jarvis, what time is it?">"Current time"</button>
+      </div>
+    </footer>
+
+    <!-- TERMINAL DRAWER -->
+    <div class="terminal-drawer" id="terminalDrawer">
+      <div class="terminal-header">
+        <div class="term-left">
+          <span class="term-title">J.A.R.V.I.S. TERMINAL // CLI & DIAGNOSTICS</span>
+          <span class="term-badge">DARWIN SHELL</span>
+        </div>
+        <div class="term-actions">
+          <button class="term-btn" id="btnClearTerminal">CLEAR</button>
+          <button class="term-btn close" id="btnCloseTerminal">✕</button>
+        </div>
+      </div>
+      <div class="terminal-body" id="terminalLogs">
+        <div class="term-line sys">[SYSTEM] Holographic CLI subsystem loaded.</div>
+        <div class="term-line sys">[READY] Standing by for bash/zsh automation calls. Type 'run command <cmd>' or enter below.</div>
+      </div>
+      <div class="terminal-input-row">
+        <span class="term-prompt">$</span>
+        <input type="text" id="terminalCommandInput" placeholder="Enter shell command (e.g. ls -la, git status, sw_vers)..." class="term-input">
+        <button class="term-run-btn" id="btnRunTerminal">RUN</button>
+      </div>
+    </div>
+
+    <!-- SCREENSHOT PREVIEW MODAL -->
+    <div class="screenshot-modal" id="screenshotModal">
+      <div class="modal-backdrop" id="modalBackdrop"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="modal-title">HOLOGRAPHIC SCREEN CAPTURE</span>
+          <button class="modal-close" id="btnCloseModal">✕</button>
+        </div>
+        <div class="modal-body">
+          <img id="screenshotImg" src="" alt="Captured Screen">
+        </div>
+        <div class="modal-footer">
+          <span id="screenshotMeta" class="modal-meta">Saved to local disk</span>
+          <a id="downloadScreenshotBtn" href="#" download="jarvis_capture.png" class="hud-link-btn">DOWNLOAD</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
